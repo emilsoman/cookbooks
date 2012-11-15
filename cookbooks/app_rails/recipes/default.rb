@@ -25,11 +25,11 @@ puts "project name = #{project_name}"
 =end
 project_name = "test_app"
 
-user "deploy" do
-  comment "Deployment user added by VisualCloud"
-end
+package "apt"
 
 package "libsqlite3-dev"
+package "nodejs"
+package "libmysqlclient-dev"
 
 application "app_rails" do
   owner 'ubuntu'
@@ -38,6 +38,7 @@ application "app_rails" do
   repository "git@github.com:emilsoman/rails_test_app.git"
   revision "HEAD"
   environment_name "development"
+  migrate true
   rails do
     gems ["bundler"]
     database_master_role "app_db"
@@ -45,6 +46,7 @@ application "app_rails" do
       database "#{project_name}_production"
       username "root"
       password "root"
+      adapter "mysql2"
     end
   end
 

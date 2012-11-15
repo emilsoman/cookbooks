@@ -29,31 +29,15 @@ if node['cloud_environment_id'].nil?
   node.set['cloud_environment_id'] = environment_id
 end
 puts "Cloud Environment ID of node #{Chef::Config[:node_name]} = #{node.cloud_environment_id.inspect}"
-=begin
-project_name = ""
-projects = data_bag('projects')
-projects.each do |project|
-  data_bag_content = data_bag_item('projects', project)
-  if data_bag_content['environment_id'] == node.cloud_environment_id
-    project_name = data_bag_content['name']
-  end
-end
-=end
 
-package "mysql-client" 
-package "libmysqlclient-dev"
-package "ruby-mysql"
-
-node['mysql']['server_root_password'] = "root"
-
+node.set['mysql']['server_root_password'] = "root"
+node.set['mysql']['server_debian_password'] = "root"
+node.set['mysql']['allow_remote_root'] = true
 include_recipe "mysql::server"
-include_recipe "mysql::server_ec2"
 
-sleep 10
+project_name = "test_app"
 
-username = "root"
-password = "root"
-mysql_database 'oracle_rules' do
-   connection ({:host => "localhost", :username => username, :password => password})
-   action :create
-end 
+database project_name do
+  connection ({:host => "localhost", :username => 'root', :password => node['mysql']['server_root_password']})
+  action :create
+end
