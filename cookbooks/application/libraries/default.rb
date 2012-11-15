@@ -94,7 +94,7 @@ class Chef
           nodes << node
         end
         if !single || nodes.empty?
-          search(:node, "role:#{role} AND chef_environment:#{node.chef_environment}") do |n|
+          search(:node, "role:#{role} AND cloud_environment_id:#{node.cloud_environment_id}") do |n|
             nodes << n
           end
         end

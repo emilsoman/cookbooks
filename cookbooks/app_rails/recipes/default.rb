@@ -40,7 +40,7 @@ application "app_rails" do
   environment_name "development"
   rails do
     gems ["bundler"]
-    database_master_role "db"
+    database_master_role "app_db"
     database do
       database "#{project_name}_production"
       username "root"
