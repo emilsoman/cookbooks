@@ -1,10 +1,10 @@
-# CHANGELOG for rails_app 
+# CHANGELOG for app_rails 
 
-This file is used to list changes made in each version of rails_app.
+This file is used to list changes made in each version of app_rails.
 
 ## 0.1.0:
 
-* Initial release of rails_app
+* Initial release of app_rails
 
 - - - 
 Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.

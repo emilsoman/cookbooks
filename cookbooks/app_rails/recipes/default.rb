@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: rails_app 
+# Cookbook Name:: app_rails 
 # Recipe:: default
 #
 # Copyright 2012, Emil Soman
@@ -31,7 +31,7 @@ end
 
 package "libsqlite3-dev"
 
-application "rails_app" do
+application "app_rails" do
   owner 'ubuntu'
   group 'admin'
   path "/deploy/#{project_name}"
