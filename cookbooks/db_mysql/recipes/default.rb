@@ -40,9 +40,20 @@ projects.each do |project|
 end
 =end
 
+package "mysql-client" 
+package "libmysqlclient-dev"
+package "ruby-mysql"
+
+node['mysql']['server_root_password'] = "root"
+
+include_recipe "mysql::server"
+include_recipe "mysql::server_ec2"
+
+sleep 10
+
 username = "root"
 password = "root"
 mysql_database 'oracle_rules' do
    connection ({:host => "localhost", :username => username, :password => password})
-    action :create
+   action :create
 end 
