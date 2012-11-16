@@ -1,12 +1,28 @@
 #
-# Cookbook Name:: app_rails 
+# Cookbook Name:: load_balancer_nginx
 # Recipe:: default
 #
 # Copyright 2012, Emil Soman
 #
-# License - MIT
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
 #
-
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
 puts "Available nodes in data bag = #{data_bag('nodes').inspect}"
 if node['cloud_environment_id'].nil?
   environment_id = data_bag_item('nodes', Chef::Config[:node_name])['environment_id']
@@ -15,14 +31,6 @@ end
 puts "Cloud Environment ID of node #{Chef::Config[:node_name]} = #{node.cloud_environment_id.inspect}"
 
 
-=begin
-Chef::Log.info("Printing : #{data_bag('nodes').inspect}")
-project_id = data_bag_item('nodes', Chef::Config[:node_name])["project_id"]
-puts "project id = #{project_id}"
-puts "data bags for projects = #{data_bag('projects')}"
-project_name = data_bag_item('projects', project_id)['name']
-puts "project name = #{project_name}"
-=end
 project_name = "test_app"
 
 package "apt"
@@ -71,29 +79,15 @@ application "app_rails" do
   path "/deploy/#{project_name}"
   repository "git@github.com:emilsoman/rails_test_app.git"
   revision "HEAD"
-  environment_name "development"
   deploy_key secret_key
+  environment_name "development"
   rails do
     gems ["bundler"]
-    database_master_role "db"
-    database do
-      database project_name
-      username "root"
-      password "root"
-      adapter "mysql2"
-    end
   end
 
-  unicorn do
-    bundler false
-  end
-
-  memcached do
-    role "memcached"
-    options do
-      ttl 1800
-      memory 256
-    end
+  nginx_load_balancer do
+    application_server_role 'app'
+    application_port 8080
   end
 
 end

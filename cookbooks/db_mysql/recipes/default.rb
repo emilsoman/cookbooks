@@ -34,10 +34,3 @@ node.set['mysql']['server_root_password'] = "root"
 node.set['mysql']['server_debian_password'] = "root"
 node.set['mysql']['allow_remote_root'] = true
 include_recipe "mysql::server"
-
-project_name = "test_app"
-
-database project_name do
-  connection ({:host => "localhost", :username => 'root', :password => node['mysql']['server_root_password']})
-  action :create
-end
