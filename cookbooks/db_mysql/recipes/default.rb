@@ -38,9 +38,6 @@ include_recipe "mysql::server"
 
 ruby_block "set_database_deployed_true" do
   block do
-    node_details = data_bag_item('nodes', Chef::Config[:node_name])
-    project = data_bag_item('projects', node_details['project_id'])
-    project["environments"][node_details["environment_id"]]["db_deployed"] = "true"
-    project.save
+    node["db_deployed"] = true
   end
 end
