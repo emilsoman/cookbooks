@@ -33,4 +33,14 @@ puts "Cloud Environment ID of node #{Chef::Config[:node_name]} = #{node.cloud_en
 node.set['mysql']['server_root_password'] = "root"
 node.set['mysql']['server_debian_password'] = "root"
 node.set['mysql']['allow_remote_root'] = true
+
 include_recipe "mysql::server"
+
+ruby_block "set_database_deployed_true" do
+  block do
+    node_details = data_bag_item('nodes', Chef::Config[:node_name])
+    project = data_bag_item('projects', node_details['project_id'])
+    project["environments"][node_details["environment_id"]]["db_deployed"] = "true"
+    project.save
+  end
+end
