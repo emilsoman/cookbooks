@@ -162,7 +162,7 @@ def install_gems
 end
 
 def create_database_yml
-  puts "Inside application_ruby/providers/rails.rb ------ #{node["rds_ip_address"]} " 
+  host = ""
   if node["rds_ip_address"].nil?
     host = new_resource.find_database_server(new_resource.database_master_role)
   else

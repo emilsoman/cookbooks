@@ -35,12 +35,6 @@ EOF
 puts secret_key.inspect
 repo = project["repo"]
 
-package "apt"
-
-execute "apt update" do
-  command "sudo apt-get update"
-end
-
 package "libsqlite3-dev"
 package "nodejs"
 package "libmysqlclient-dev"
@@ -77,9 +71,8 @@ application "app_rails" do
   end
 end
 
-
 ruby_block "set_app_instance_as_deployed" do
   block do
-    node['app_deployed'] = true
+    node.set['app_deployed'] = true
   end
 end

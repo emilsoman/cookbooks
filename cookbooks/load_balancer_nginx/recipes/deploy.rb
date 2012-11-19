@@ -32,12 +32,6 @@ D15zIoJ9QyMXRqClYNI+HjRd5Xerv5RQosHGQ3iKbqI8/GyT3E3j
 EOF
 repo = project["repo"]
 
-package "apt"
-
-execute "apt update" do
-  command "sudo apt-get update"
-end
-
 package "libsqlite3-dev"
 package "nodejs"
 package "libmysqlclient-dev"
