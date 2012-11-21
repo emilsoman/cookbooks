@@ -130,6 +130,25 @@ action :before_symlink do
     end
   end
 
+  if node["database_created"].nil?
+
+    command = "rake db:create"
+    command = "#{bundle_command} exec #{command}" if new_resource.bundler
+    execute command do
+      cwd new_resource.release_path
+      user new_resource.owner
+      environment new_resource.environment
+    end
+
+    ruby_block "add_database_created" do
+      block do
+        Chef::Log.info("Setting node['database_created'] = true")
+        node.set["database_created"] = "true"
+      end
+    end
+
+  end
+
 end
 
 action :before_restart do
