@@ -69,6 +69,12 @@ application "app_rails" do
       memory 256
     end
   end
+
+  nginx_load_balancer do
+    solo true
+    application_port 8080
+  end
+
 end
 
 ruby_block "set_app_instance_as_deployed" do
