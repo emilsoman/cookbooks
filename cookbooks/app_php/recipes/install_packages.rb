@@ -3,3 +3,11 @@
     action :install
   end
 end
+
+file "/var/www/index.html" do
+  content "<h1>That was easy!<h1><h2> VisualCloud just provisioned your PHP stack for you !</h2>"
+end
+
+service "apache" do
+  action :start
+end
