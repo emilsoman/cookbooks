@@ -39,10 +39,11 @@ service "tomcat" do
   case node["platform"]
   when "centos","redhat","fedora"
     supports :restart => true, :status => true
+    action [:enable, :start]
   when "debian","ubuntu"
     supports :restart => true, :reload => true, :status => true
+    action :nothing
   end
-  action [:enable, :start]
 end
 
 case node["platform"]
